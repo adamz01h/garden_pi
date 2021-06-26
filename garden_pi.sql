@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
--- Host:                         192.168.0.127
--- Server version:               10.3.29-MariaDB-0+deb10u1 - Raspbian 10
--- Server OS:                    debian-linux-gnueabihf
+-- Host:                         127.0.0.1
+-- Server version:               5.7.26 - MySQL Community Server (GPL)
+-- Server OS:                    Win64
 -- HeidiSQL Version:             11.2.0.6213
 -- --------------------------------------------------------
 
@@ -22,10 +22,26 @@ CREATE TABLE IF NOT EXISTS `devices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) DEFAULT NULL COMMENT 'sensor type = 1 moisture, 2 tempature, 3 light, 4 sound, 5 relay',
   `gpio_address` int(11) DEFAULT NULL COMMENT 'gpio address on pi ',
-  `name` text DEFAULT NULL COMMENT 'user nameable',
-  `location` text DEFAULT NULL COMMENT 'user nameable location',
-  `create_date` datetime DEFAULT NULL COMMENT 'device create date ',
-  `last_modification` datetime DEFAULT NULL COMMENT 'last update',
+  `name` text COMMENT 'user nameable',
+  `location` text COMMENT 'user nameable location',
+  `create` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'device create date ',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'last update',
+  KEY `Index 1` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table garden_pi.locations
+CREATE TABLE IF NOT EXISTS `locations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text,
+  `plants` text,
+  `moisture_goal` text,
+  `tempature_goal` text,
+  `light_goal` text,
+  `sound_goal` text,
+  `create` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `Index 1` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -35,20 +51,20 @@ CREATE TABLE IF NOT EXISTS `devices` (
 CREATE TABLE IF NOT EXISTS `log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `device_id` int(11) DEFAULT NULL,
-  `data` text DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
+  `data` text,
+  `create` datetime DEFAULT CURRENT_TIMESTAMP,
   KEY `Index 1` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table garden_pi.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` text DEFAULT NULL,
-  `password` text DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `mod_date` datetime DEFAULT NULL,
+  `username` text,
+  `password` text,
+  `create` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `Index 1` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -58,4 +74,3 @@ CREATE TABLE IF NOT EXISTS `users` (
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-
